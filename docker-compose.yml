@@ -1,12 +1,12 @@
 version: '2'
 services:
   centos6:
-    image: centos:6
+    image: centos:6.8
     hostname: centos6
     volumes:
       - ./:/work/:rw
   centos7:
-    image: centos:7
+    image: centos:7.3.1611
     hostname: centos7
     volumes:
       - ./:/work/:rw
