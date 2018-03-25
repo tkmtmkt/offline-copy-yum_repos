@@ -1,24 +1,47 @@
-offline-copy-yum_repos
-======================
+yum_repos-maker
+===============
 
-### 利用方法
+利用方法
+--------
+
+### リポジトリアーカイブ作成
 
 以下のファイルを編集して、yumコマンドでインストールするパッケージを指定する。
 
 ```sh
-$ vi create_yum_repos.sh
+$ vi centos6/share/make-yum_repos.sh
 ```
 
-以下のコマンドで、OS毎のrpmパッケージをダウンロードしたアーカイブを作成する。
+OS毎のrpmパッケージをダウンロードしたアーカイブを作成する。
 
 
 ```sh
-$ run_centos6.sh
-$ run_centos7.sh
+$ make-centos6.sh
+
+# 作成するアーカイブは以下の通り。
+centos6/share/yum_repos-{リポジトリ名}-centos6-YYYYmmdd.tar.gz
 ```
 
-以下のコマンドは、作業ディレクトリのアーカイブを作成する。
+
+### リポジトリ登録／パッケージインストール
+
+インストール対象のサーバでアーカイブを解凍する。
 
 ```sh
-$ make-archive.sh
+$ sudo tar -xzf yum_repos-{リポジトリ名}-centos6-YYYYmmdd.tar.gz -C /media
+```
+
+yumリポジトリとして登録する。
+
+```sh
+$ sudo ln -sf /media/yum_repos-{リポジトリ名}/{リポジトリ名}.repo /etc/yum.repos.d/
+
+# リポジトリに登録されていることを確認する
+$ sudo yum repolist
+```
+
+パッケージをインストールする。
+
+```sh
+$ sudo yum --disablerepo=* --enablerepo={リポジトリ名} install {パッケージ名}
 ```
